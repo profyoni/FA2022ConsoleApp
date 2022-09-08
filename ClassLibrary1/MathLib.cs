@@ -1,8 +1,23 @@
 ﻿using Humanizer;
 
 
+// Java package ~ C# Project / Compilation Unit
+// default access package, default access is internal
 namespace ClassLibrary1 // ~ package
 {
+    // top level classes can be public or internal
+    internal static class ExtMethods // all methods must be static
+    {
+        public static int ToPower(this int x, int y)
+        {
+            return (int)Math.Pow(x, y);
+        }
+
+        public static bool IsPalindrome(this String s)
+        {
+            return s == "Bob";
+        }
+    }
     public class MathLib // internal accessible in this project= assembly
     {
         public static int SquareFromString(String s)
