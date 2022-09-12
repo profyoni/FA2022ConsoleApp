@@ -36,6 +36,13 @@ namespace ClassLibrary1 // ~ package
         public static String Add(int a, int b)
         {
             int val =  a + b;
+
+            String s = "Bob";
+            s.LastIndexOf("a");
+/*
+            Object o = Reflection.CreateObject(String.class);
+            Reflection.CallMethod(o, "LastIndexOf", "AA")
+*/
             return val.ToWords();
         }
 
@@ -52,5 +59,7 @@ namespace ClassLibrary1 // ~ package
 
             return 0;
         }
+
+
     }
 }

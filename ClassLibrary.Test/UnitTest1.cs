@@ -32,7 +32,7 @@ namespace ClassLibrary.Test
         [TestMethod]
         public void PowerTo2()
         {
-            ExtMethods.ToPower(2,10).Should().Be(1024);
+            ExtMethods.ToPower(2, 10).Should().Be(1024);
         }
 
         [TestMethod]
@@ -53,11 +53,57 @@ namespace ClassLibrary.Test
                 // not legal q = 0;
             }
 
-            for(int i=0;i<list.Length; i++) // like in Java ReAD only
+            for (int i = 0; i < list.Length; i++) // like in Java ReAD only
             {
                 list[i] = 0;
             }
             list[0].Should().Be(0);
         }
+
+
+        [TestMethod]
+        public void Verbatim()
+        {
+            var s = @"http:\\www.example.com";
+            s.Should().Be("http:\\\\www.example.com");
+        }
+
+
+        [TestMethod]
+        public void StringInterpolation()
+        {
+            int id = 12345;
+            var name = "Bob";
+            var s = "Your name is" + name + "Your Id is" + id;
+                s = $"Your name is {name} Your Id is {id}";
+            s.Should().Be("Your name is Bob Your Id is 12345");
+        }
+
+
+        [TestMethod]
+        public void Decimal_FloatingPoint()
+        {
+            var doubleVal = 123.45; // floats and doubles although they have greater range than int, they are only approximate
+
+            int x = int.MaxValue-99;
+            float f = (float)(x);
+
+          //  ((long)x).Should().Be( (long)f);
+
+            var x2 = 0.1; // doles not have closed binary fractional form
+
+            // NEVER USE floats or doubles for money
+
+            decimal d = 144.234M; // BigInteger, BigNumber
+
+            double f1 = 1.0, f2 = 0.99999999999999999999999999;
+
+            var delta = 0.0000000001;
+            System.Math.Abs(f1 - f2).Should().BeLessThan(delta);
+            Assert.AreEqual(f1, f2, 0.001);
+
+
+        }
+
     }
 }
