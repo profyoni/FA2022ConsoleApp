@@ -46,6 +46,21 @@ namespace ClassLibrary1 // ~ package
             return val.ToWords();
         }
 
+        public static void Swap(ref int x, ref int y)
+        {
+            int t = x ^ y;
+            x = x ^ t;
+            y = y ^ t;
+        }
+
+
+        public static void Swap(ref String x, ref String y)
+        {
+            var t =x;
+            x = y;
+            y = t;
+        }
+
         // Datatypes
         // Java 8 primitves, all else classes (byte, short, int, long, float, char, bool, double,
         // primitive value is passed, not the address
@@ -61,5 +76,24 @@ namespace ClassLibrary1 // ~ package
         }
 
 
+    }
+
+    public class Fraction
+    {
+        private readonly int n, d;
+        //public Fraction()
+        //{
+        //    n = 0;d = 1;
+        //}
+        //public Fraction(int n)
+        //{
+        //    this.n = n; d = 1;
+        //}
+
+        public Fraction(int n = 0, int d = 1)
+        {
+            this.n = n; 
+            this.d = d;
+        }
     }
 }
