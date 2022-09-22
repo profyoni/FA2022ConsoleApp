@@ -200,7 +200,6 @@ namespace ClassLibrary.Test
             var q2 = s?.ToCharArray();
             q2[1].Should().Be('o');
             s[1].Should().Be('o');
-
         }
 
         [TestMethod]
