@@ -128,7 +128,7 @@ namespace ClassLibrary.Test
         [TestMethod]
         public void Fraction()
         {
-            new Fraction();
+            new Fraction(0,1);
             new Fraction(d: 6);
         }
 
@@ -217,6 +217,70 @@ namespace ClassLibrary.Test
 
            
         }
+
+        [TestMethod]
+        public void GeometryProps()
+        {
+            Geometry geom = new Geometry();
+            geom.Radius = 1.0;
+            geom.Diameter.Should().BeApproximately(2.0,0.001);
+        }
+        
+
+        [TestMethod]
+        public void FractionProps()
+        {
+            var f1 = new Fraction(2,3);
+            f1.Numerator.Should().Be(2);
+
+            var f2 = new Fraction 
+            { 
+                Numerator = 0, Denominator = 9 
+            };
+
+            // L-Value = R-value
+            // 5 = x; BAD NEWS
+            // x = y; x lvalue, y rvalue getting it
+            //f1.Numerator = 8; // setter
+            //f1.Numerator.Should().Be(8);
+
+            var x = f1.Numerator;
+        }
+
+        // Op Loading extend intuitive behavior of operatoes like +,*,-,++ to User Defined classes
+        // Precednce rules Cannot be changed
+        // Cannot create new operators (e.g. +-)
+        [TestMethod]
+        public void OpOverloading()
+        {
+            Fraction
+                _1_2 = new Fraction(1, 2),
+                _3_8 = new Fraction
+                {
+                    Numerator = 3,
+                    Denominator = 8
+                },
+                _2_4 = new Fraction(2,4);
+
+            var f1 = _1_2 * _3_8;
+            f1.Should().Be(new Fraction(3,16));
+            (-_1_2).Should().Be(new Fraction(-1, 2));
+            (_1_2 > _3_8).Should().BeTrue();
+            (_1_2 >= _2_4).Should().BeTrue();
+
+            var f2 = (_1_2 * _1_2) * _1_2; // 1/8
+
+            int a =  (int) f2;
+            var _2 = (int)new Fraction(8, 3);
+            _2.Should().Be(2);
+            ((double)new Fraction(8, 3))
+                .Should().BeApproximately(8.0/3.0,0.00001);
+
+
+            Fraction f4 = (Fraction) 5;
+            f4.Should().Be(new Fraction(5, 1));
+        }
+
     }
     class Student
     {

@@ -78,22 +78,126 @@ namespace ClassLibrary1 // ~ package
 
     }
 
+    class Geometry
+    {
+        // auto-property
+        public double Radius { get; set; } // hidden field
+        public double Diameter { 
+            get { 
+                return Radius * 2; }
+        }
+        public double Area { get { return Radius * Radius * Math.PI; } }
+
+        public Geometry()
+        {
+            Radius = 9;
+            // Diameter = 8; not legal--there is no setter
+        }
+
+    }
+
     public class Fraction
     {
-        private readonly int n, d;
-        //public Fraction()
-        //{
-        //    n = 0;d = 1;
-        //}
-        //public Fraction(int n)
-        //{
-        //    this.n = n; d = 1;
-        //}
+        public override bool Equals (Object o)
+        {
+            if (o == null) return false;
+            if (!(o is Fraction)) return false;
+            Fraction other = (Fraction)o;
+
+
+            return this==other;
+        }
+
+        private int d;
+        public int Numerator { get; set; } // default prop
+        // hidden field that stores Numerator
+        public int Denominator
+        {
+            get
+            {
+                return d;
+            }
+            set
+            {
+                if (value == 0)
+                {
+                    throw new ArgumentException("Denominator must not be 0");
+                }
+                d = value;
+            }
+        }
 
         public Fraction(int n = 0, int d = 1)
         {
-            this.n = n; 
-            this.d = d;
+            Numerator = n; 
+            Denominator = d;
         }
+
+        public override String ToString()
+        {
+            return $"[{Numerator}/{Denominator}]";
+        }
+        public static Fraction operator *(Fraction f1, Fraction f2)
+        {
+            return new Fraction(f1.Numerator * f2.Numerator,
+                f1.Denominator * f2.Denominator);
+        }
+        // TODO Stub
+        public static Fraction operator+(Fraction f1, Fraction f2)
+        {
+            return new Fraction();
+        }
+
+        public static Fraction operator -(Fraction f1)
+        {
+            return new Fraction(-f1.Numerator, f1.Denominator);
+        }
+
+        public static bool operator >(Fraction f1, Fraction f2)
+        {
+            return f1.Numerator * f2.Denominator > f2.Numerator * f1.Denominator;
+        }
+        public static bool operator >=(Fraction f1, Fraction f2)
+        {
+            return !(f1 < f2);
+        }
+
+        public static bool operator <(Fraction f1, Fraction f2)
+        {
+            return f1.Numerator * f2.Denominator < f2.Numerator * f1.Denominator;
+        }
+        public static bool operator <=(Fraction f1, Fraction f2)
+        {
+            return !(f1 > f2);
+        }
+        public static bool operator==(Fraction f1, Fraction f2)
+        {
+            return f1.Numerator * f2.Denominator == f2.Numerator * f1.Denominator;
+        }
+        public static bool operator !=(Fraction f1, Fraction f2)
+        {
+            return !(f1 == f2);
+        }
+
+        // implicigt used when conversion involves no loss of data/precision == it is perfectly safe
+        public static explicit operator int(Fraction f)
+        {
+            return f.Numerator / f.Denominator;
+        }
+        public static explicit operator double(Fraction f)
+        {
+            return ((double)f.Numerator / f.Denominator);
+        }
+
+        public static implicit operator Fraction(int v)
+        {
+            return new Fraction(v);
+        }
+        // Property replacement for getNumerator, setNumrator
+        // encapsulation / protecting our private data
+        // properies are much more powerful syntactic sugar
+        // ORM's depend on properties = POCO
+        // Built-In Tooling = PopertyGrid
+        // Properties are methods disguised as Fields (Instance Variables)
     }
 }
