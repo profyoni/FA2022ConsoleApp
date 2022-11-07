@@ -10,7 +10,7 @@ namespace ClassLibrary1 // ~ package
     {
         public static int ToPower(this int x, int y)
         {
-            return (int)Math.Pow(x, y);
+            return (int)System.Math.Pow(x, y);
         }
 
         public static bool IsPalindrome(this String s)
@@ -23,7 +23,7 @@ namespace ClassLibrary1 // ~ package
         public static int SquareFromString(String s)
         {
             int x = Convert.ToInt32(s);
-            int squaredX = (int)Math.Pow(x, 2);
+            int squaredX = (int)System.Math.Pow(x, 2);
             return squaredX;
         }
 
@@ -95,21 +95,26 @@ namespace ClassLibrary1 // ~ package
         }
 
     }
-
+    public class Math
+    {
+        public const double PI = 3.14;
+        public const int SIZE = 10;
+        public int Square = SIZE * SIZE;
+    }
     public class Fraction
     {
-        public override bool Equals (Object o)
+        public override bool Equals(Object o)
         {
             if (o == null) return false;
             if (!(o is Fraction)) return false;
             Fraction other = (Fraction)o;
 
 
-            return this==other;
+            return this == other;
         }
 
-        private int d;
-        public int Numerator { get; set; } // default prop
+        private readonly int d;
+        public int Numerator { get; init; } // default prop
         // hidden field that stores Numerator
         public int Denominator
         {
@@ -117,7 +122,7 @@ namespace ClassLibrary1 // ~ package
             {
                 return d;
             }
-            set
+            init
             {
                 if (value == 0)
                 {
@@ -129,7 +134,7 @@ namespace ClassLibrary1 // ~ package
 
         public Fraction(int n = 0, int d = 1)
         {
-            Numerator = n; 
+            Numerator = n;
             Denominator = d;
         }
 
@@ -143,7 +148,7 @@ namespace ClassLibrary1 // ~ package
                 f1.Denominator * f2.Denominator);
         }
         // TODO Stub
-        public static Fraction operator+(Fraction f1, Fraction f2)
+        public static Fraction operator +(Fraction f1, Fraction f2)
         {
             return new Fraction();
         }
@@ -170,7 +175,7 @@ namespace ClassLibrary1 // ~ package
         {
             return !(f1 > f2);
         }
-        public static bool operator==(Fraction f1, Fraction f2)
+        public static bool operator ==(Fraction f1, Fraction f2)
         {
             return f1.Numerator * f2.Denominator == f2.Numerator * f1.Denominator;
         }
@@ -179,7 +184,7 @@ namespace ClassLibrary1 // ~ package
             return !(f1 == f2);
         }
 
-        // implicigt used when conversion involves no loss of data/precision == it is perfectly safe
+        // implicit used when conversion involves no loss of data/precision == it is perfectly safe
         public static explicit operator int(Fraction f)
         {
             return f.Numerator / f.Denominator;
@@ -199,5 +204,19 @@ namespace ClassLibrary1 // ~ package
         // ORM's depend on properties = POCO
         // Built-In Tooling = PopertyGrid
         // Properties are methods disguised as Fields (Instance Variables)
+
+
+        public int this[String v]
+        {
+            get { return v == "0" ? Numerator : Denominator; }
+
+            init
+            {
+                if (v == "0")
+                    Numerator = value;
+                else Denominator = value;
+            }
+        }
     }
+
 }

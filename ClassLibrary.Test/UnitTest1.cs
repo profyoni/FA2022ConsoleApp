@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClassLibrary1;
 using FluentAssertions;
 using System;
+using System.Collections.Generic;
 
 namespace ClassLibrary.Test
 {
@@ -270,15 +271,68 @@ namespace ClassLibrary.Test
 
             var f2 = (_1_2 * _1_2) * _1_2; // 1/8
 
-            int a =  (int) f2;
+            int myInt = 9; // 0000 1001
+            // 32 f.p. representation
+            // 1 sign bit
+            // 15 exponent
+            // 48 mantissa
+            double qq = myInt; // promotion
+            myInt = (int) qq;
+            myInt = (short) 67L;
+
+            int a = (int)  f2;
             var _2 = (int)new Fraction(8, 3);
             _2.Should().Be(2);
             ((double)new Fraction(8, 3))
                 .Should().BeApproximately(8.0/3.0,0.00001);
 
-
-            Fraction f4 = (Fraction) 5;
+            Fraction f8 = _1_2 * 10;
+            Fraction f4 =  10 * _1_2;
             f4.Should().Be(new Fraction(5, 1));
+        }
+
+        [TestMethod]
+        public void LanguageTest()
+        {
+            float f = (int)3; // 32 bits, float mantissa 23 bits
+                              // pigeonhole
+                              //            01111111 11111111 111111111 11111111
+                              //            0 0001 1010  1111111111111111111111111
+            unchecked // compiler does not check for overflow
+            {
+                ((int)(float)(Int32.MaxValue -10)).Should().NotBe(Int32.MaxValue-10);
+            }
+
+            int bigNum = Int32.MaxValue/2 - 10;
+            checked // compiler does  check for overflow
+            {
+                ((int)(float)(bigNum)).Should().NotBe(bigNum);
+            }
+            unchecked
+            {
+                (-Int32.MinValue).Should().Be(Int32.MinValue);
+            }
+
+        }
+
+        [TestMethod]
+        public void LanguageTest2_Indexer()
+        {
+            var listS = new System.Collections.Generic.List<String>();
+            listS.Add("A"); listS.Add("B"); listS.Add("C");
+            listS[0].Should().Be("A");
+
+            var dict = new Dictionary<String, int>();
+
+            dict["Bob"] = 9;
+
+            dict["Bob"].Should().Be(9);
+
+            // not legal if fraction is immutable
+            //Fraction f = new Fraction();
+            //f["0"] = 5;
+            //f.Numerator.Should().Be(5);
+            //f["0"].Should().Be(5);
         }
 
     }
